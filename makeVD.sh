@@ -8,7 +8,7 @@ git clone $GIT_URL vd"$I"
 
 cd vd"$I"
 
-git checkout dev
+git checkout singleprocess
 
 let "remainder = $I % 2"
 
@@ -26,9 +26,11 @@ let SERVER_APPS_STARTPORT="8001 + (($I - 1) * 10)"
 
 configContent=$(cat config.txt | ../jq-linux64 '.url = "'"$SERVER_URL"'" | .port = '"${SERVER_PORT}"' | .startportrange = '"${SERVER_APPS_STARTPORT}"' | .idFromBackend = "1"')
 
-echo $configContent > config.txt
+#echo $configContent > config.txt
+echo $configContent | ../jq-linux64 . > config.txt
 
 cp dm-config-template.txt dm-config.txt
+
 DM_URL="http://130.230.142.101:3001/"
 
 dmConfigContent=$(cat dm-config.txt | ../jq-linux64 '.url = "'"$DM_URL"'"')

@@ -4,6 +4,8 @@ GIT_URL=https://github.com/farshadahmadi/liquidiot-server.git
 
 I=$1;
 
+ROOM_NUMBER=$2
+
 git clone $GIT_URL vd"$I"
 
 cd vd"$I"
@@ -24,7 +26,7 @@ SERVER_URL='http://130.230.142.100:'"${SERVER_PORT}"''
 
 let SERVER_APPS_STARTPORT="8001 + (($I - 1) * 10)"
 
-configContent=$(cat config.txt | ../jq-linux64 '.url = "'"$SERVER_URL"'" | .port = '"${SERVER_PORT}"' | .startportrange = '"${SERVER_APPS_STARTPORT}"' | .idFromBackend = "1"')
+configContent=$(cat config.txt | ../jq-linux64 '.url = "'"$SERVER_URL"'" | .port = '"${SERVER_PORT}"' | .startportrange = '"${SERVER_APPS_STARTPORT}"' | .idFromBackend = "1" | .location.tag = "'"$ROOM_NUMBER"'"')
 
 #echo $configContent > config.txt
 echo $configContent | ../jq-linux64 . > config.txt
